@@ -8,9 +8,9 @@ Some definitions
 combinations = ['111', '112', '113', '121', '122', '123', '131', '132', '133',
                 '211', '212', '213', '221', '222', '223', '231', '232', '233']
 excel_base_path = 'excel_files/'
-sam_file = excel_base_path + 'sam.xlsx'
-euklems_file = excel_base_path + 'euklems.xlsx'
-settings_file = excel_base_path + 'settings.xlsx'
+default_sam_file = excel_base_path + 'sam.xlsx'
+default_euklems_file = excel_base_path + 'euklems.xlsx'
+default_settings_file = excel_base_path + 'settings.xlsx'
 euklems_codes_column_name_in_excel = "EUKLEMS code"
 sam_codes_column_name_in_excel = "SAM code"
 
@@ -19,13 +19,7 @@ Generating the Pandas Dataframes from the files
 """
 
 
-def do_calcululations(sam_param, euklems_param):
-    if sam_param:
-        sam = pd.read_excel(sam_param, sheet_name='AT',
-                            index_col=0)
-    else:
-        sam = pd.read_excel(sam_file, sheet_name='AT',
-                            index_col=0)
+def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file):
     sam = pd.read_excel(sam_file, sheet_name='AT',
                         index_col=0)
     euklems = pd.read_excel(euklems_file, sheet_name='W_shares')
@@ -103,7 +97,8 @@ def return_files_tut():
     if request.method == 'POST':
         sam = request.files['sam']
         euklems = request.files['euklems']
-        do_calcululations(sam, euklems)
+        settings = request.files['settings']
+        do_calcululations(sam, euklems, settings)
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
     try:
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
