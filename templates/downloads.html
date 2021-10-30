@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NTNU</title>
+    <title>NTNU IØT - SAM/EUKLEMS model</title>
     <link rel=" stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700">
+    <link rel="icon" href="/static/ntnu_logo.png" sizes="any">
 
     <style>
         body {
             background: #EBEBE8;
             font-family: 'Open Sans';
+            background-image: url('/static/glos.jpg');
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,10 +24,9 @@
         }
 
         .grid {
-            display: grid;
-            width: min-content;
-            transition: 0.3s all;
-            grid-template-columns: 1fr 0px;
+            position: relative;
+            display: flex;
+            justify-content: center;
         }
 
         .main_form {
@@ -33,17 +35,17 @@
             justify-content: center;
             align-items: center;
             border-radius: 30px;
-            padding: 30px;
+            padding: 20px;
             background: #EBEBE8;
-            box-shadow: 16px 16px 32px #c8c8c5,
-                -16px -16px 32px #ffffff;
+            /* box-shadow: 16px 16px 32px #c8c8c5,
+                -16px -16px 32px #ffffff; */
             z-index: 1;
         }
 
         .field {
             border-radius: 30px;
-            padding: 30px;
-            margin: 30px;
+            padding: 20px;
+            margin: 20px;
             background: linear-gradient(145deg, #d4d4d1, #fbfbf8);
             box-shadow: 16px 16px 32px #c8c8c5,
                 -16px -16px 32px #ffffff;
@@ -82,17 +84,17 @@
         #instructions_div {
             opacity: 0;
             min-width: 250px;
-            max-width: 40%;
+            max-width: 25%;
             background: grey;
-            transition: all 0.3s;
-            margin-left: -40%;
+            transition: all 0.8s;
+            margin-left: -25%;
             display: flex;
             flex-direction: column;
             border-radius: 30px;
             padding: 30px;
             background: #EBEBE8;
-            box-shadow: 16px 16px 32px #c8c8c5,
-                -16px -16px 32px #ffffff;
+            /* box-shadow: 16px 16px 32px #c8c8c5,
+                -16px -16px 32px #ffffff; */
         }
 
         .label_btn {
@@ -101,12 +103,22 @@
             box-shadow: 15px 15px 30px #bcbcba,
                 -15px -15px 30px #ffffff;
             transition: all 0.3s;
+            width: fit-content;
+            margin: auto;
         }
 
         .label_btn:hover {
             transform: scale(1.1);
             background: #D1E2C4;
             cursor: pointer;
+        }
+
+        #instructions_div>div>h5 {
+            margin-bottom: 0px
+        }
+
+        #instructions_div>div>p {
+            margin-top: 5px
         }
     </style>
 </head>
@@ -117,7 +129,7 @@
 
     <div class="grid" id="grid_id">
         <form action="/results/" method="POST" enctype="multipart/form-data" class="main_form">
-            <label id="instructions" class="label_btn" onclick="showInstructions()">Need instructions?</label>
+            <label id="instructions" class="label_btn" onclick="showInstructions()">Need instructions? 💡</label>
             <div class="field">
                 <label for="sam">SAM</label>
                 <input type="file" id="sam" name="sam">
@@ -130,29 +142,40 @@
                 <label for="euklems">Settings</label>
                 <input type="file" id="settings" name="settings">
             </div>
-            <p><input type="submit" value="Download" class="submit_btn" /></p>
+            <p><input type="submit" value="Download 🚀" class="submit_btn" /></p>
         </form>
         <div id="instructions_div">
-            <label id="hide" class="label_btn" onclick="hideInstructions()">Hide instructions</label>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsam libero saepe ducimus non quidem est
-                inventore veritatis laudantium ad sequi soluta modi illo aliquam accusantium, nulla neque at
-                repellendus.
+            <label id="hide" class="label_btn" onclick="hideInstructions()">Hide instructions 🤓</label>
+            <div>
+                <h5>SAM</h5>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facilis veniam temporibus magni, neque
+                </p>
+            </div>
+            <div>
+                <h5>EUKLEMS</h5>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere animi nisi vel molestiae beatae
+                </p>
+            </div>
+            <div>
+                <h5>Settings</h5>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dolor perspiciatis, maiores
+                    molestiae voluptate, beatae, ducimus quos odit quas et vero iure ipsum delectus sunt? Neque
+                    atque aut ab nesciunt.</p>
+            </div>
             </p>
         </div>
-    </div>
-    {% endblock %}
+        {% endblock %}
 </body>
 
 <script>
     function showInstructions() {
         document.getElementById('instructions_div').style = "margin-left: 0%; opacity: 1;"
-        document.getElementById('grid_id').style = "grid-template-columns: 1fr 1fr;"
+        // document.getElementById('grid_id').style = "grid-template-columns: 1fr 1fr;"
         document.getElementById('instructions').style = "display: none"
     }
     function hideInstructions() {
-        document.getElementById('instructions_div').style = "margin-left: -40%; opacity: 0;"
-        document.getElementById('grid_id').style = "grid-template-columns: 1fr 0px;"
+        document.getElementById('instructions_div').style = "margin-left: -25%; opacity: 0;"
+        // document.getElementById('grid_id').style = "grid-template-columns: 1fr 0px;"
         document.getElementById('instructions').style = "display: block"
     }
 </script>
