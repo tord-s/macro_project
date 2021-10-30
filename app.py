@@ -106,7 +106,8 @@ def return_files_tut():
         sam = request.files['sam']
         euklems = request.files['euklems']
         settings = request.files['settings']
-        do_calcululations(sam, euklems, settings)
+        msg = do_calcululations(sam, euklems, settings)
+        print(msg)
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
     try:
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
