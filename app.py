@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import send_file, render_template, request
 import pandas as pd
-import time
 
 """
 Some definitions
