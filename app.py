@@ -129,7 +129,3 @@ def return_files_tut():
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
     except Exception as e:
         return str(e)
-
-
-if __name__ == "__main__":
-    do_calcululations()
