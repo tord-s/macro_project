@@ -19,6 +19,27 @@ Generating the Pandas Dataframes from the files
 """
 
 
+def insert_row(row_number, df, row_name):
+    # Slice the upper half of the dataframe
+    df1 = df[0:row_number]
+
+    # Store the result of lower half of the dataframe
+    df2 = df[row_number:]
+
+    # Insert the row in the upper half dataframe
+    print(df1.loc[row_number])
+    df1.loc[row_number] = row_name
+
+    # Concat the two dataframes
+    df_result = pd.concat([df1, df2])
+
+    # Reassign the index labels
+    df_result.index = [*range(df_result.shape[0])]
+
+    # Return the updated dataframe
+    return df_result
+
+
 def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file):
     sam = pd.read_excel(sam_file, sheet_name='AT',
                         index_col=0)
@@ -67,25 +88,38 @@ def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_fi
                                             code_from_sam, new_value_in_sam))
 
     with pd.ExcelWriter(excel_base_path + "output.xlsx") as writer:
-        columns_to_be_added = {}
-        for combo in combinations:
-            columns_to_be_added['Labour ' +
-                                combo] = {'Labour ' + combo: None}
-        columns_df = pd.DataFrame(columns_to_be_added)
-        output_sceleton = sam.append(columns_df)
+
+        output_sceleton = sam
+        labour_column_index = output_sceleton.columns.get_loc("Labour")
+        labour_row_index = list(output_sceleton.index).index("Labour")
+
+        i = len(combinations) - 1
+        while (i > 0):
+            output_sceleton.insert(labour_column_index - 1,
+                                   'Labour ' + combinations[i], None)
+            i -= 1
+
+        first_part = output_sceleton.copy(deep=True).iloc[0:labour_row_index]
+        second_part = output_sceleton.copy(deep=True).iloc[labour_row_index:]
 
         for row, column, value in data_to_be_added:
-            output_sceleton.loc[row, column] = value
+            first_part.loc[row, column] = value
+
+        output_sceleton = first_part.append(second_part)
+
+        output_sceleton.drop(['Labour'], axis=1, inplace=True)
+        output_sceleton.drop(['Labour'], axis=0, inplace=True)
+
+        print(output_sceleton)
 
         output_sceleton.to_excel(writer, verbose=True,
                                  index=True, sheet_name='Results')
 
 
-# ... other code ....
 app = Flask(__name__)
 
 
-@app.route('/')
+@ app.route('/')
 def file_downloads():
     try:
         return render_template('downloads.html')
@@ -93,7 +127,7 @@ def file_downloads():
         return str(e)
 
 
-@app.route('/results/', methods=['POST', 'GET'])
+@ app.route('/results/', methods=['POST', 'GET'])
 def return_files_tut():
     if request.method == 'POST':
         sam = request.files['sam']
@@ -105,3 +139,7 @@ def return_files_tut():
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
     except Exception as e:
         return str(e)
+
+
+if __name__ == "__main__":
+    do_calcululations()
