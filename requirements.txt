@@ -38,5 +38,5 @@ troposphere==3.1.0
 urllib3==1.26.7
 Werkzeug==2.0.2
 wsgi-request-logger==0.4.6
-xlrd==2.0.1
+xlrd==1.2.0
 XlsxWriter==3.0.1
