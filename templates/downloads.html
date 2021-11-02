@@ -91,8 +91,11 @@
             display: flex;
             flex-direction: column;
             border-radius: 30px;
+            max-height: 80vh;
+            overflow-y: scroll;
             padding: 30px;
             background: #EBEBE8;
+
             /* box-shadow: 16px 16px 32px #c8c8c5,
                 -16px -16px 32px #ffffff; */
         }
@@ -120,6 +123,35 @@
         #instructions_div>div>p {
             margin-top: 5px
         }
+
+        #instructions_div>div>a {
+            color: black;
+        }
+
+        #instructions_div>div>a:hover {
+            opacity: 0.7;
+        }
+
+        /* Works on Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: linear-gradient(#88888800, #888, #88888800);
+        }
+
+        /* Works on Chrome, Edge, and Safari */
+        *::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-image: linear-gradient(45deg, #88888800, #888, #88888800);
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -143,24 +175,37 @@
                 <input type="file" id="settings" name="settings">
             </div>
             <p><input type="submit" value="Download 🚀" class="submit_btn" /></p>
+            {% if used_time %}
+            <h1>Finished in {{ used_time }}</h1>
+            {% endif %}
         </form>
         <div id="instructions_div">
             <label id="hide" class="label_btn" onclick="hideInstructions()">Hide instructions 🤓</label>
             <div>
                 <h5>SAM</h5>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facilis veniam temporibus magni, neque
+                <p>Requiered column/row names are <i>Labour</i> and <i>HOUS</i>. The rest are flexible and only depend
+                    on what you define under <i>SAM code</i> in your <i>Settings</i> file. Chooses the first sheet if
+                    file contains multiple sheets.
                 </p>
+                <a href="/home/tords/macro_project/excel_files/sam.xlsx" download="example_sam">Download an example SAM
+                    file</a>
             </div>
             <div>
                 <h5>EUKLEMS</h5>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere animi nisi vel molestiae beatae
+                <p>Uses the sheet called <i>W_shares</i>. Needs the columns <i>code, gender, age</i> and <i>edu</i> in
+                    addition to what you define under <i>EUKLEMS code</i> in your <i>Settings</i> file.
                 </p>
+                <a href="/home/tords/macro_project/excel_files/euklems.xlsx" download="example_euklems">Download an
+                    example EUKLEMS file</a>
             </div>
             <div>
                 <h5>Settings</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dolor perspiciatis, maiores
-                    molestiae voluptate, beatae, ducimus quos odit quas et vero iure ipsum delectus sunt? Neque
-                    atque aut ab nesciunt.</p>
+                <p>Use comma separeted values to create a many to many relation between SAM and EUKLEMS sectors.
+                    <i>YoA</i> is short for <i>Year of Analysis</i> and specifies which year to use in the EUKLEMS file.
+                </p>
+                <a href="/home/tords/macro_project/excel_files/settings.xlsx" download="example_settings">Download an
+                    example Settings
+                    file</a>
             </div>
             </p>
         </div>

@@ -2,7 +2,7 @@ from flask import Flask
 from flask import send_file, render_template, request
 import pandas as pd
 import os
-
+import time
 
 """
 Some definitions
@@ -24,7 +24,8 @@ Generating the Pandas Dataframes from the files
 
 
 def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file):
-    sam = pd.read_excel(sam_file, sheet_name='AT',
+    start_time = time.time()
+    sam = pd.read_excel(sam_file, sheet_name=0,
                         index_col=0)
     euklems = pd.read_excel(euklems_file, sheet_name='W_shares')
     settings = pd.read_excel(settings_file, sheet_name='Settings')
@@ -108,6 +109,8 @@ def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_fi
     with pd.ExcelWriter(excel_base_path + "output.xlsx") as writer:
         output_sceleton.to_excel(writer, verbose=True,
                                  index=True, sheet_name='Results')
+    end_time = time.time()
+    return round(end_time-start_time, 5)
 
 
 app = Flask(__name__)
@@ -127,9 +130,10 @@ def return_files_tut():
         sam = request.files['sam']
         euklems = request.files['euklems']
         settings = request.files['settings']
-        do_calcululations(sam, euklems, settings)
-        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
+        used_time = do_calcululations(sam, euklems, settings)
+        print('Used time: ', used_time)
+        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[:-2] + '.xlsx')
     try:
-        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output.xlsx')
+        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[:-2] + '.xlsx')
     except Exception as e:
         return str(e)
