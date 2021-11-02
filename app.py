@@ -10,8 +10,11 @@ Some definitions
 combinations = ['111', '112', '113', '121', '122', '123', '131', '132', '133',
                 '211', '212', '213', '221', '222', '223', '231', '232', '233']
 excel_base_path = '/home/tords/macro_project/excel_files/'
-if os.environ['USERNAME'] == 'Tord':
-    excel_base_path = 'excel_files/'
+try:
+    if os.environ['USERNAME'] == 'Tord':
+        excel_base_path = 'excel_files/'
+except:
+    pass
 default_sam_file = excel_base_path + 'sam.xlsx'
 default_euklems_file = excel_base_path + 'euklems.xlsx'
 default_settings_file = excel_base_path + 'settings.xlsx'
