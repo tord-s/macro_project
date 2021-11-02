@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import send_file, render_template, request
 import pandas as pd
+import os
+
 
 """
 Some definitions
@@ -8,6 +10,8 @@ Some definitions
 combinations = ['111', '112', '113', '121', '122', '123', '131', '132', '133',
                 '211', '212', '213', '221', '222', '223', '231', '232', '233']
 excel_base_path = '/home/tords/macro_project/excel_files/'
+if os.environ['USERNAME'] == 'Tord':
+    excel_base_path = 'excel_files/'
 default_sam_file = excel_base_path + 'sam.xlsx'
 default_euklems_file = excel_base_path + 'euklems.xlsx'
 default_settings_file = excel_base_path + 'settings.xlsx'
@@ -95,7 +99,7 @@ def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_fi
         combo_total = 0
         for value in combo_values:
             combo_total += float(value)
-        output_sceleton.loc['Labour ' + combo, 'HOUS'] = combo_total
+        output_sceleton.loc['HOUS', 'Labour ' + combo] = combo_total
 
     # Removes more general Labour column and row
     output_sceleton.drop(['Labour'], axis=1, inplace=True)
