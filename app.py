@@ -21,17 +21,18 @@ default_settings_file = excel_base_path + 'settings.xlsx'
 euklems_codes_column_name_in_excel = "EUKLEMS code"
 sam_codes_column_name_in_excel = "SAM code"
 
-"""
-Generating the Pandas Dataframes from the files
-"""
 
-
-def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file):
+def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file,
+                    sam_sheet_name='Sheet1', euklems_sheet_name='Sheet1', settings_sheet_name='Sheet1', year_of_analysis='2017'):
     start_time = time.time()
-    sam = pd.read_excel(sam_file, sheet_name=0,
+
+    """
+    Generating the Pandas Dataframes from the files
+    """
+    sam = pd.read_excel(sam_file, sheet_name=sam_sheet_name,
                         index_col=0)
-    euklems = pd.read_excel(euklems_file, sheet_name='W_shares')
-    settings = pd.read_excel(settings_file, sheet_name='Settings')
+    euklems = pd.read_excel(euklems_file, sheet_name=euklems_sheet_name)
+    settings = pd.read_excel(settings_file, sheet_name=settings_sheet_name)
 
     # Reads the Labour row of the SAM - Generates a dictionary
     sam_labour_row = sam.loc['Labour'].dropna().to_dict()
@@ -48,7 +49,7 @@ def do_calcululations(sam_file=default_sam_file, euklems_file=default_euklems_fi
         euklems_codes = all_euklems_codes[i].split(', ')
         mapped_codes.append((sam_codes, euklems_codes))
 
-    year_of_analysis = int(settings.loc[0, 'YoA'])
+    year_of_analysis = int(year_of_analysis)
 
     data_to_be_added = []
     for code_map in mapped_codes:
@@ -133,7 +134,13 @@ def return_files_tut():
         sam = request.files['sam']
         euklems = request.files['euklems']
         settings = request.files['settings']
-        used_time = do_calcululations(sam, euklems, settings)
+        sam_sheet_name = request.form['sam_sheet_name']
+        euklems_sheet_name = request.form['euklems_sheet_name']
+        settings_sheet_name = request.form['settings_sheet_name']
+        year_of_analysis = request.form['year_of_analysis']
+        print(sam_sheet_name)
+        used_time = do_calculations(
+            sam, euklems, settings, sam_sheet_name, euklems_sheet_name, settings_sheet_name, year_of_analysis)
         print('Used time: ', used_time)
         return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[:-2] + '.xlsx')
     try:

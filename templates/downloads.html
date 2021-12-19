@@ -165,14 +165,25 @@
             <div class="field">
                 <label for="sam">SAM</label>
                 <input type="file" id="sam" name="sam">
+                <label for="sam_sheet_name">Sheet name</label>
+                <input type="text" placeholder="SAM sheet name" id="sam_sheet_name" name="sam_sheet_name" value="AT">
             </div>
             <div class="field">
                 <label for="euklems">EUKLEMS</label>
                 <input type="file" id="euklems" name="euklems">
+                <label for="euklems_sheet_name">Sheet name</label>
+                <input type="text" placeholder="EUKLEMS sheet name" id="euklems_sheet_name" name="euklems_sheet_name"
+                    value="W_shares">
+                <label for="year_of_analysis">Year of Analysis (column name)</label>
+                <input type="text" placeholder="Year of Analysis" id="year_of_analysis" name="year_of_analysis"
+                    value="2017">
             </div>
             <div class="field">
                 <label for="euklems">Settings</label>
                 <input type="file" id="settings" name="settings">
+                <label for="settings_sheet_name">Sheet name</label>
+                <input type="text" placeholder="Settings sheet name" id="settings_sheet_name" name="settings_sheet_name"
+                    value="Settings">
             </div>
             <p><input type="submit" value="Download 🚀" class="submit_btn" /></p>
             {% if used_time %}
