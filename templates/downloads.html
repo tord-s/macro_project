@@ -52,6 +52,7 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s;
+            width: -webkit-fill-available;
         }
 
         .field:hover {
@@ -59,8 +60,8 @@
         }
 
         .field label {
-            margin-bottom: 10px;
             font-weight: bold;
+            margin-right: 5px;
         }
 
         .submit_btn {
@@ -152,6 +153,18 @@
             background-image: linear-gradient(45deg, #88888800, #888, #88888800);
             border-radius: 10px;
         }
+
+        .subfield {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+
+        input {
+            border: none;
+            border-radius: 30px;
+            padding: 5px;
+        }
     </style>
 </head>
 
@@ -163,27 +176,47 @@
         <form action="/results/" method="POST" enctype="multipart/form-data" class="main_form">
             <label id="instructions" class="label_btn" onclick="showInstructions()">Need instructions? 💡</label>
             <div class="field">
-                <label for="sam">SAM</label>
-                <input type="file" id="sam" name="sam">
-                <label for="sam_sheet_name">Sheet name</label>
-                <input type="text" placeholder="SAM sheet name" id="sam_sheet_name" name="sam_sheet_name" value="AT">
+                <div class="subfield">
+                    <label for="sam">SAM</label>
+                    <input type="file" id="sam" name="sam">
+                </div>
+                <div class="subfield">
+                    <label for="sam_sheet_name">Sheet name</label>
+                    <input type="text" placeholder="SAM sheet name" id="sam_sheet_name" name="sam_sheet_name"
+                        value="Sheet1">
+                </div>
+                <div class="subfield">
+                    <label for="sam_country_code">Country code</label>
+                    <input type="text" placeholder="SAM sheet name" id="sam_country_code" name="sam_country_code"
+                        value="AT">
+                </div>
             </div>
             <div class="field">
-                <label for="euklems">EUKLEMS</label>
-                <input type="file" id="euklems" name="euklems">
-                <label for="euklems_sheet_name">Sheet name</label>
-                <input type="text" placeholder="EUKLEMS sheet name" id="euklems_sheet_name" name="euklems_sheet_name"
-                    value="W_shares">
-                <label for="year_of_analysis">Year of Analysis (column name)</label>
-                <input type="text" placeholder="Year of Analysis" id="year_of_analysis" name="year_of_analysis"
-                    value="2017">
+                <div class="subfield">
+                    <label for="euklems">EUKLEMS</label>
+                    <input type="file" id="euklems" name="euklems">
+                </div>
+                <div class="subfield">
+                    <label for="euklems_sheet_name">Sheet name</label>
+                    <input type="text" placeholder="EUKLEMS sheet name" id="euklems_sheet_name"
+                        name="euklems_sheet_name" value="W_shares">
+                </div>
+                <div class="subfield">
+                    <label for="year_of_analysis">Year of Analysis</label>
+                    <input type="text" placeholder="Year of Analysis" id="year_of_analysis" name="year_of_analysis"
+                        value="2017">
+                </div>
             </div>
             <div class="field">
-                <label for="euklems">Settings</label>
-                <input type="file" id="settings" name="settings">
-                <label for="settings_sheet_name">Sheet name</label>
-                <input type="text" placeholder="Settings sheet name" id="settings_sheet_name" name="settings_sheet_name"
-                    value="Settings">
+                <div class="subfield">
+                    <label for="euklems">Mapping</label>
+                    <input type="file" id="mapping" name="mapping">
+                </div>
+                <div class="subfield">
+                    <label for="mapping_sheet_name">Sheet name</label>
+                    <input type="text" placeholder="mapping sheet name" id="mapping_sheet_name"
+                        name="mapping_sheet_name" value="Sheet1">
+                </div>
             </div>
             <p><input type="submit" value="Download 🚀" class="submit_btn" /></p>
             {% if used_time %}
@@ -195,7 +228,7 @@
             <div>
                 <h5>SAM</h5>
                 <p>Requiered column/row names are <i>Labour</i> and <i>HOUS</i>. The rest are flexible and only depend
-                    on what you define under <i>SAM code</i> in your <i>Settings</i> file. Chooses the first sheet if
+                    on what you define under <i>SAM code</i> in your <i>mapping</i> file. Chooses the first sheet if
                     file contains multiple sheets.
                 </p>
                 <a href="https://drive.google.com/uc?export=download&id=1N5g9v7gcD4fqQX5m29y9zLKjCacrvNl2"
@@ -205,20 +238,20 @@
             <div>
                 <h5>EUKLEMS</h5>
                 <p>Uses the sheet called <i>W_shares</i>. Needs the columns <i>code, gender, age</i> and <i>edu</i> in
-                    addition to what you define under <i>EUKLEMS code</i> in your <i>Settings</i> file.
+                    addition to what you define under <i>EUKLEMS code</i> in your <i>mapping</i> file.
                 </p>
                 <a href="https://drive.google.com/uc?export=download&id=1ExSFaGQeLqLC-DGe5Fzvv2BEOI0SmI4X"
                     download="example_EUKLEMS">Download an
                     example EUKLEMS file</a>
             </div>
             <div>
-                <h5>Settings</h5>
+                <h5>mapping</h5>
                 <p>Use comma separeted values to create a many to many relation between SAM and EUKLEMS sectors.
                     <i>YoA</i> is short for <i>Year of Analysis</i> and specifies which year to use in the EUKLEMS file.
                 </p>
                 <a href="https://drive.google.com/uc?export=download&id=1ED-ANO-8udyLVbPB1cwUiCGHMlIMiX4H"
-                    download="example_settings">Download an
-                    example Settings
+                    download="example_mapping">Download an
+                    example mapping
                     file</a>
             </div>
             </p>

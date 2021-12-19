@@ -17,32 +17,49 @@ except:
     pass
 default_sam_file = excel_base_path + 'sam.xlsx'
 default_euklems_file = excel_base_path + 'euklems.xlsx'
-default_settings_file = excel_base_path + 'settings.xlsx'
+default_mapping_file = excel_base_path + 'mapping.xlsx'
 euklems_codes_column_name_in_excel = "EUKLEMS code"
 sam_codes_column_name_in_excel = "SAM code"
 
 
-def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file, settings_file=default_settings_file,
-                    sam_sheet_name='Sheet1', euklems_sheet_name='Sheet1', settings_sheet_name='Sheet1', year_of_analysis='2017'):
+def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file, mapping_file=default_mapping_file,
+                    sam_sheet_name='AT', euklems_sheet_name='W_shares', mapping_sheet_name='Sheet1', year_of_analysis='2017', country_code='AT'):
     start_time = time.time()
 
     """
     Generating the Pandas Dataframes from the files
     """
-    sam = pd.read_excel(sam_file, sheet_name=sam_sheet_name,
-                        index_col=0)
+    # sam = pd.read_excel(sam_file, sheet_name=sam_sheet_name,
+    #                     index_col=0)
     euklems = pd.read_excel(euklems_file, sheet_name=euklems_sheet_name)
-    settings = pd.read_excel(settings_file, sheet_name=settings_sheet_name)
+    mapping = pd.read_excel(mapping_file, sheet_name=mapping_sheet_name)
 
     # Reads the Labour row of the SAM - Generates a dictionary
-    sam_labour_row = sam.loc['Labour'].dropna().to_dict()
+    # sam_labour_row = sam.loc['Labour'].dropna().to_dict()
+
+    # print(sam_labour_row)
+    # print('----------------------------------------')
+
+    # sam_long = pd.read_excel('excel_files/sam_long.xlsx', sheet_name='Sheet1',
+    #                          names=['country', 'gets', 'gives', 'amount'])
+    sam_long = pd.read_excel(sam_file, sheet_name='Sheet1',
+                             names=['country', 'gets', 'gives', 'amount'])
+
+    sam_for_given_country = sam_long.loc[sam_long['country'] == country_code]
+    sam_long_labour_row = sam_for_given_country.loc[sam_for_given_country['gets'] == 'Labour', [
+        'amount', 'gives']].set_index('gives')['amount'].to_dict()
+    # print(sam_for_given_country)
+    # print('----------------------------------------')
+    # print(sam_long_labour_row)
+
+    sam_labour_row = sam_long_labour_row
 
     """
     Mapping codes SAM/EUKLEMS
     """
-    all_euklems_codes = settings.get(
+    all_euklems_codes = mapping.get(
         euklems_codes_column_name_in_excel).dropna()
-    all_sam_codes = settings.get(sam_codes_column_name_in_excel).dropna()
+    all_sam_codes = mapping.get(sam_codes_column_name_in_excel).dropna()
     mapped_codes = []
     for i in range(0, len(all_sam_codes)):
         sam_codes = all_sam_codes[i].split(', ')
@@ -75,6 +92,9 @@ def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file
                     data_to_be_added.append(('Labour ' + combo,
                                             code_from_sam, new_value_in_sam))
 
+    """
+    Big Question here - does he want output in 'Long' format as well?
+    """                                            
     output_sceleton = sam
     # Gets index of where the Labour column and row is
     labour_column_index = output_sceleton.columns.get_loc("Labour")
@@ -133,17 +153,21 @@ def return_files_tut():
     if request.method == 'POST':
         sam = request.files['sam']
         euklems = request.files['euklems']
-        settings = request.files['settings']
+        mapping = request.files['mapping']
         sam_sheet_name = request.form['sam_sheet_name']
         euklems_sheet_name = request.form['euklems_sheet_name']
-        settings_sheet_name = request.form['settings_sheet_name']
+        mapping_sheet_name = request.form['mapping_sheet_name']
         year_of_analysis = request.form['year_of_analysis']
         print(sam_sheet_name)
         used_time = do_calculations(
-            sam, euklems, settings, sam_sheet_name, euklems_sheet_name, settings_sheet_name, year_of_analysis)
+            sam, euklems, mapping, sam_sheet_name, euklems_sheet_name, mapping_sheet_name, year_of_analysis)
         print('Used time: ', used_time)
-        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[:-2] + '.xlsx')
+        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[: -2] + '.xlsx')
     try:
-        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[:-2] + '.xlsx')
+        return send_file(excel_base_path + "output.xlsx", attachment_filename='resulting_output_id' + str(round(time.time(), 0))[: -2] + '.xlsx')
     except Exception as e:
         return str(e)
+
+
+if __name__ == "__main__":
+    print(do_calculations())
