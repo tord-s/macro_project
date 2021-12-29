@@ -206,16 +206,10 @@
                     <input type="text" placeholder="Year of Analysis" id="year_of_analysis" name="year_of_analysis"
                         value="2017">
                 </div>
-            </div>
-            <div class="field">
                 <div class="subfield">
-                    <label for="euklems">Mapping</label>
-                    <input type="file" id="mapping" name="mapping">
-                </div>
-                <div class="subfield">
-                    <label for="mapping_sheet_name">Sheet name</label>
-                    <input type="text" placeholder="mapping sheet name" id="mapping_sheet_name"
-                        name="mapping_sheet_name" value="Sheet1">
+                    <label for="mapping_sheet_name">Mapping sheet name</label>
+                    <input type="text" placeholder="Mapping sheet name" id="mapping_sheet_name"
+                        name="mapping_sheet_name" value="Mapping">
                 </div>
             </div>
             <p><input type="submit" value="Download 🚀" class="submit_btn" /></p>
@@ -227,32 +221,22 @@
             <label id="hide" class="label_btn" onclick="hideInstructions()">Hide instructions 🤓</label>
             <div>
                 <h5>SAM</h5>
-                <p>Requiered column/row names are <i>Labour</i> and <i>HOUS</i>. The rest are flexible and only depend
-                    on what you define under <i>SAM code</i> in your <i>mapping</i> file. Chooses the first sheet if
-                    file contains multiple sheets.
+                <p>Needs to be on the <i>long format</i>.
                 </p>
-                <a href="https://drive.google.com/uc?export=download&id=1N5g9v7gcD4fqQX5m29y9zLKjCacrvNl2"
+                <a href="https://drive.google.com/uc?export=download&id=1FFe3zXMP-FVcTxN3O4tX8XoIVm63Kbi0"
                     download="example_SAM">Download an example SAM
                     file</a>
             </div>
             <div>
                 <h5>EUKLEMS</h5>
-                <p>Uses the sheet called <i>W_shares</i>. Needs the columns <i>code, gender, age</i> and <i>edu</i> in
-                    addition to what you define under <i>EUKLEMS code</i> in your <i>mapping</i> file.
+                <p><i>Sheet name</i> is the name of the EUKLEMS sheet and <i>Mapping sheet name</i> the name of the
+                    sheet with the mapping between SAM and EUKLEMS sectors. The mapping is done in two columns that must
+                    be called <i>EUKLEMS code</i> and <i>SAM code</i>. Many to many relation is possible by giving comma
+                    separated values.
                 </p>
-                <a href="https://drive.google.com/uc?export=download&id=1ExSFaGQeLqLC-DGe5Fzvv2BEOI0SmI4X"
+                <a href="https://drive.google.com/uc?export=download&id=1QYVyyW9_DsnC0768mJBsOmbJBiX8sTz5"
                     download="example_EUKLEMS">Download an
                     example EUKLEMS file</a>
-            </div>
-            <div>
-                <h5>mapping</h5>
-                <p>Use comma separeted values to create a many to many relation between SAM and EUKLEMS sectors.
-                    <i>YoA</i> is short for <i>Year of Analysis</i> and specifies which year to use in the EUKLEMS file.
-                </p>
-                <a href="https://drive.google.com/uc?export=download&id=1ED-ANO-8udyLVbPB1cwUiCGHMlIMiX4H"
-                    download="example_mapping">Download an
-                    example mapping
-                    file</a>
             </div>
             </p>
         </div>
