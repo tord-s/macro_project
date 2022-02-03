@@ -12,23 +12,25 @@ combinations = ['111', '112', '113', '121', '122', '123', '131', '132', '133',
                 '211', '212', '213', '221', '222', '223', '231', '232', '233']
 excel_base_path = '/home/tords/macro_project/excel_files/'
 try:
+    # If program is run locally
     if os.environ['USERNAME'] == 'Tord':
         excel_base_path = 'excel_files/'
 except:
     pass
-default_sam_file = excel_base_path + 'sam_long.xlsx'
-default_euklems_file = excel_base_path + 'euklems ny.xlsx'
+default_sam_file = excel_base_path + 'sam_example_v2.xlsx'
+default_euklems_file = excel_base_path + 'euklems_example_v2.xlsx'
 # default_mapping_file = excel_base_path + 'mapping.xlsx'
 euklems_codes_column_name_in_excel = "EUKLEMS code"
 sam_codes_column_name_in_excel = "SAM code"
 
 
+# Main calculation function
 def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file,
                     sam_sheet_name='Sheet1', euklems_sheet_name='W_shares', mapping_sheet_name='Mapping', year_of_analysis='2017', country_code='AT'):
     start_time = time.time()
 
     """
-    Generating the Pandas Dataframes from the files
+    Generating the Pandas Dataframes from the input files
     """
     euklems = pd.read_excel(euklems_file, sheet_name=euklems_sheet_name)
     mapping = pd.read_excel(euklems_file, sheet_name=mapping_sheet_name)
@@ -119,6 +121,10 @@ def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file
     labour_row_index_list = list(
         smaller_index_search_df.loc[sam_long['gets'] == 'Labour'].index)
     labour_row_index = int(labour_row_index_list[0]) - 1
+
+    # Remove old Labour rows
+    output_sceleton = output_sceleton.drop(
+        output_sceleton[output_sceleton.gets == "Labour"].index)
 
     # Inserts the new rows
     i = len(combinations) - 1
