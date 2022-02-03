@@ -63,7 +63,6 @@ def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file
         for code_from_sam in codes_from_sam:
             sam_total += sam_long_labour_row[code_from_sam.strip()]
         sam_total_per_sector = sam_total / len(codes_from_sam)
-
         euklems_relevant_data = euklems[[
             'code', 'gender', 'age', 'edu', year_of_analysis]]
         codes_from_euklems = code_map[1]
@@ -131,7 +130,7 @@ def do_calculations(sam_file=default_sam_file, euklems_file=default_euklems_file
     while (i >= 0):
         for code in list_of_sam_codes:
             combination = 'Labour ' + combinations[i]
-            output_sceleton = pd.DataFrame(np.insert(output_sceleton.values, labour_row_index + 1, values=[
+            output_sceleton = pd.DataFrame(np.insert(output_sceleton.values, labour_row_index - 1, values=[
                 country_code, combination, code, formated_data[code][combination]], axis=0))
         i -= 1
 
